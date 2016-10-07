@@ -10,13 +10,14 @@
 </head>
 <body>
 
-	<h1>Hello ${user}!</h1>
-	Congratulations! You succeeded deploying your first JSP application on wildfly!<br/>
-	So what's next? 
-
-	<c:if test="${not empty user}">
-		<hr/>
-		<a href="logout">Logout</a>
-	</c:if>
+	<h1>Please login</h1>
+	<form method="post" action="login">
+		Username: <input type="text" name="username" /> <br/>
+		Password: <input type="password" name="password" /> <br/>
+		
+		<input type="submit" value="login" />
+	</form>
+	<hr/>
+	<li>username: john.doe, password: pwd</li>
 </body>
 </html>

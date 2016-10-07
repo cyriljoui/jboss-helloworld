@@ -9,14 +9,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<h1>JSP Servlet with login feature</h1>
 
-	<h1>Hello ${user}!</h1>
-	Congratulations! You succeeded deploying your first JSP application on wildfly!<br/>
-	So what's next? 
-
-	<c:if test="${not empty user}">
-		<hr/>
-		<a href="logout">Logout</a>
-	</c:if>
+	<ul>
+		<li><a href="hello">/hello</a></li>
+	</ul>	
+	
 </body>
 </html>
