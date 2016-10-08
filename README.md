@@ -30,8 +30,8 @@ mvn wildfly:deploy
 ### excercise 
 modify the application to display your name instead.
 
-## Notes usage of
-
+## Notes
+Note the usage of
 ```java
 	request.setAttribute("user", "John Doe");
 	request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp").forward(request, response);
