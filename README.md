@@ -1,37 +1,49 @@
 # JEE Tutorial on Wildfly
 
-## JSP web application
-In this step, we are going to integrate the JEE (7) CDI API to 
-- manage authentication
-- manage user _basket_ using CDI scopes (Session Scope) 
+## JSF web application
+In this step, we are going to the same application using JSF technology highlighting the following features :
+- authentication
+- user _basket_ using JSF scopes (Session Scope)
+- _faces-config.xml_ to manage flow navigation between pages 
 
 ## Checkout application step
 * run the following command to setup application step
 ```sh
-	git checkout -f cdi
+	git checkout -f jsf
 ```
 * deploy the application using
 ```sh
 	mvn wildfly:deploy
 ```
-* on your favorite browser, display [http://localhost:8080/jboss-helloworld/hello](http://localhost:8080/jboss-helloworld/hello)
+All JSF pages (through JSF Servlet, see web.xml) are mapped on _/faces/*_ route.
 
-You will prompt to enter a login/password to access the page.
+* on your favorite browser, display [http://localhost:8080/jboss-helloworld/](http://localhost:8080/jboss-helloworld/)
+
+You will prompt to enter a login/password to access the _hello_ page.
 
 ### excercise
 * Add a _remove item_ feature on the _/hello_ page
-* Try removing the `implements Serializable` on the `UserSessionManager` and redeploy ... try to explain the error that appears on deployment
+* Add a new view (.xhtml) page with a navigation rule on the _faces-config.xml_
 
 ## Notes
 Note the usage of
 
-* Java / CDI
+* Java / JSF
 ```java
-	@Inject
-	@SessionScoped
+	@ManagedBean
+	@ManagedProperty	
+	@javax.faces.bean.SessionScoped
+	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 ```
 
-* in jsp pages
+* in xhtml pages
 ```html
-	<c:forEach items="${basket.items}" var="entry">	
+	<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+      
+    <h:commandButton />
+    <h:inputText />
+    <h:outputText />	
 ```
+explore xhtml pages ...

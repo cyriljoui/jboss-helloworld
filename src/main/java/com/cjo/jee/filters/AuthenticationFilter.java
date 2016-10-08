@@ -12,6 +12,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.cjo.jee.controllers.UserSessionManager;
 
@@ -21,17 +22,10 @@ import com.cjo.jee.controllers.UserSessionManager;
 @WebFilter("/*")
 public class AuthenticationFilter implements Filter {
 
-    private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
 
-    @Inject
-    UserSessionManager flowManager;
-    
-	/**
-     * Default constructor. 
-     */
-    public AuthenticationFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	@Inject
+	UserSessionManager flowManager;
 
 	/**
 	 * @see Filter#destroy()
@@ -53,28 +47,25 @@ public class AuthenticationFilter implements Filter {
 		LOGGER.info("req.RequestURL(): "+req.getRequestURL());
 		LOGGER.info("req.getServletContext().getContextPath(): "+req.getServletContext().getContextPath());
 		LOGGER.info("req.getMethod(): "+req.getMethod());
-		
 		LOGGER.info("req.getServletPath(): "+req.getServletPath());
-		if ("/login".equals(req.getServletPath())) {
-			LOGGER.info("on login ..");
+
+		if (req.getPathInfo().equals("/index.xhtml")) {
+			LOGGER.info("on /index.xhtml ...");
 			chain.doFilter(request, response);
 			return;
 		}
-		if ("/".equals(req.getServletPath())) {
-			LOGGER.info("on / ..");
+		if (req.getPathInfo().equals("/login.xhtml")) {
+			LOGGER.info("on /login.xhtml ...");
 			chain.doFilter(request, response);
 			return;
 		}
-		
 		if (flowManager.isAuthenticated()) {
 			LOGGER.info("Authenticated ... ");
 			chain.doFilter(request, response);
 		} else {
-			
-			LOGGER.info("not authenticated on "+req.getServletPath());
-			flowManager.saveContext(req);
 
-			req.getRequestDispatcher("/login").forward(request, response);
+			LOGGER.info("not authenticated on "+req.getRequestURI());
+			((HttpServletResponse)response).sendRedirect(req.getServletContext().getContextPath()+"/faces/login.xhtml");
 		}
 	}
 

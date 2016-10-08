@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>Login page</title>
+</h:head>
+<h:body>
+
+	<h1>Please login</h1>
+	<h:form>
+		<fieldset>
+			<legend>Username</legend>
+			<h:inputText value="#{user.username}" />
+			<br/>
+			<legend>Password</legend>
+			<h:inputSecret value="#{user.password}" />
+			<br/>
+			<h:commandButton value="Login" action="#{login.authenticate()}"/>
+		</fieldset>
+	</h:form>
+	
+	<hr/>
+	<ul>
+		<li>login: john.doe, password: pwd</li>
+	</ul>
+
+</h:body>
+</html>
