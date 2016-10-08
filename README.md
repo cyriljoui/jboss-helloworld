@@ -21,9 +21,7 @@ In this step, we are going to set up a basic JSP Web application that displays y
 ```sh
 mvn wildfly:deploy
 ```
-* on your favorite browser, display
-
-	[http://localhost:8080/hello]
+* on your favorite browser, display [http://localhost:8080/jboss-helloworld/hello](http://localhost:8080/jboss-helloworld/hello)
 
 ### excercise 
 modify the application to display your name instead.
