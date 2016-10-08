@@ -10,12 +10,16 @@ In this step, we are going to set up a basic JSP Web application that displays y
 	bin\standalone.bat
 ```
 
-## Application
-
-### check configuration
-* clone this project
+## Checkout application
+Download the tutorial application using (git)
 ```sh
-	git clone -f jsp
+	git clone https://github.com/mahieddine-ichir/jboss-helloworld.git
+```
+
+### install application
+* run the following command to set up application step
+```sh
+	git checkout -f jsp
 ``` 
 * deploy the application on Wildfly AS using
 ```sh
