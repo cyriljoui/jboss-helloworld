@@ -20,7 +20,7 @@ You will prompt to enter a login/password to access the page.
 
 ### excercise
 * Add your username to authorized users
-* Add _Invalid username / password_ 
+* Add _Invalid username / password_ message on invalid credentials
 
 ## Notes
 Note the usage of
