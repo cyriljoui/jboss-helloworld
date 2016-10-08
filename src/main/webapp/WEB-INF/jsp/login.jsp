@@ -18,6 +18,9 @@
 		<input type="submit" value="login" />
 	</form>
 	<hr/>
-	<li>username: john.doe, password: pwd</li>
+	<ol>
+		<li>username: john.doe, password: pwd</li>
+		<li>username: ?add you username?, password: pwd</li>
+	</ol>
 </body>
 </html>

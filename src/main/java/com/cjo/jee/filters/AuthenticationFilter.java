@@ -1,4 +1,4 @@
-package com.cjo.jee;
+package com.cjo.jee.filters;
 
 import java.io.IOException;
 import java.util.logging.Logger;

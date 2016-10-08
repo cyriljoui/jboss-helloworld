@@ -1,23 +1,22 @@
-package com.cjo.jee;
+package com.cjo.jee.controllers;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/hello")
-public class HelloWorldServlet extends HttpServlet {
+@WebServlet("/logout")
+public class LogoutServlet extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
+       
 	/**
-	 * UID.
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	private static final long serialVersionUID = 2563570703208835685L;
-
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp").forward(request, response);
+		request.getSession().invalidate();
+		request.getRequestDispatcher("/").forward(request, response);
 	}
 }
