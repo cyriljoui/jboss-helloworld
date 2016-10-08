@@ -1,14 +1,14 @@
 # JEE Tutorial on Wildfly
 
 ## JSP web application
-In this step, we are going to add some _login_ feature to our application. We will thus highlight the usage of 
-- _jstl_ tags
-- JEE _WebFilers_ for authentication access handling 
+In this step, we are going to integrate the JEE (7) CDI API to 
+- manage authentication
+- manage user _basket_ using CDI scopes (Session Scope) 
 
 ## Checkout application step
 * run the following command to setup application step
 ```sh
-	git checkout -f jstl
+	git checkout -f cdi
 ```
 * deploy the application using
 ```sh
@@ -19,31 +19,19 @@ In this step, we are going to add some _login_ feature to our application. We wi
 You will prompt to enter a login/password to access the page.
 
 ### excercise
-* Add your username to authorized users
-* Add _Invalid username / password_ message on invalid credentials
+* Add a _remove item_ feature on the _/hello_ page
+* Try removing the `implements Serializable` on the `UserSessionManager` and redeploy ... try to explain the error that appears on deployment
 
 ## Notes
 Note the usage of
 
-* in _AuthenticationFilter_
+* Java / CDI
 ```java
-	req.getServletPath();
-	req.getSession().setAttribute();
-	chain.doFilter(request, response);
-```
-* in _LoginServlet_
-```java
-	request.getParameter();
-	response.sendRedirect();
-```
-* in _LogoutServlet_
-```java
-	request.getSession().invalidate();	
+	@Inject
+	@SessionScoped
 ```
 
 * in jsp pages
 ```html
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-	<c:if test="${not empty user}">
-	
+	<c:forEach items="${basket.items}" var="entry">	
 ```

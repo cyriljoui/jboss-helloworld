@@ -3,6 +3,7 @@ package com.cjo.jee.filters;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,6 +13,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
+import com.cjo.jee.controllers.UserSessionManager;
+
 /**
  * Servlet Filter implementation class AuthenticationFilter
  */
@@ -20,6 +23,9 @@ public class AuthenticationFilter implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
 
+    @Inject
+    UserSessionManager flowManager;
+    
 	/**
      * Default constructor. 
      */
@@ -60,21 +66,16 @@ public class AuthenticationFilter implements Filter {
 			return;
 		}
 		
-		if (req.getSession().getAttribute("user") == null) {
+		if (flowManager.isAuthenticated()) {
+			LOGGER.info("Authenticated ... ");
+			chain.doFilter(request, response);
+		} else {
 			
 			LOGGER.info("not authenticated on "+req.getServletPath());
-			
-			req.getSession().setAttribute("X-SAVED-REQUEST-PATH", req.getRequestURI());
-			req.getSession().setAttribute("X-SAVED-REQUEST-METHOD", req.getMethod());
-			
+			flowManager.saveContext(req);
+
 			req.getRequestDispatcher("/login").forward(request, response);
-			
-		} else {
-			LOGGER.info("Authenticated ... ");
-			// pass the request along the filter chain
-			chain.doFilter(request, response);
 		}
-		
 	}
 
 	/**

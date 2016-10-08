@@ -14,6 +14,21 @@
 	Congratulations! You succeeded deploying your first JSP application on wildfly!<br/>
 	So what's next? 
 
+	<hr/>
+	<form method="post" action="baskets">
+		<input type="text" name="name" placeholder="Item name" />
+		<input type="text" name="value" placeholder="Item value" />
+
+		<input type="submit" value="Add Item" />
+	</form>
+
+	<hr/>
+	<ol>
+	<c:forEach items="${basket.items}" var="entry">
+		<li>${entry.key} | ${entry.value}</li>		
+	</c:forEach>
+	</ol>
+	
 	<c:if test="${not empty user}">
 		<hr/>
 		<a href="logout">Logout</a>
