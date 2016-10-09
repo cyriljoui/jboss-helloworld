@@ -31,6 +31,8 @@
 	<h2>Hello ${user}!</h2>
 	Use the following form to add your favorite items to your basket.
 	<br/>
+	<i>example: Audi A3 TFSI black edition</i>
+	<br/>
 	<form method="post" action="baskets">
 		<div class="form-group">
 			<input type="text" name="item" placeholder="Item description" class="form-control" />

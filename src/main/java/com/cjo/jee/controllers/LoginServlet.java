@@ -18,7 +18,8 @@ public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(LoginServlet.class.getName());
+	@Inject
+	private Logger logger;
     
 	@Inject
 	private AuthenticationService authService;
@@ -30,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LOGGER.info("GET on /login");
+		logger.info("GET on /login");
 		request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 	}
 
@@ -38,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LOGGER.info("POST on /login");
+		logger.info("POST on /login");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		

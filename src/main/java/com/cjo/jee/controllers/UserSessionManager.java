@@ -15,7 +15,8 @@ import com.cjo.jee.controllers.model.Basket;
 @SessionScoped
 public class UserSessionManager implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(UserSessionManager.class.getName());
+	@Inject
+	private Logger logger;
 
 	/**
 	 * UID.
@@ -38,7 +39,7 @@ public class UserSessionManager implements Serializable {
 		
 		if (savedPath != null) {
 			if (httpMethod.equalsIgnoreCase("GET")) {
-				LOGGER.info("redirect on "+savedPath);
+				logger.info("redirect on "+savedPath);
 				response.sendRedirect(savedPath);
 			} else {
 				request.getRequestDispatcher(savedPath).forward(request, response);

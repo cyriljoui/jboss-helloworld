@@ -21,7 +21,8 @@ import com.cjo.jee.controllers.UserSessionManager;
 @WebFilter("/secured/*")
 public class AuthenticationFilter implements Filter {
 
-    private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
+	@Inject
+    private Logger logger;
 
     @Inject
     UserSessionManager flowManager;
@@ -51,31 +52,31 @@ public class AuthenticationFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
-		LOGGER.info("---------------");
-		LOGGER.info("req.getRequestURI(): "+req.getRequestURI());
-		LOGGER.info("req.getContextPath(): "+req.getContextPath());
-		LOGGER.info("req.getPathInfo(): "+req.getPathInfo());
-		LOGGER.info("req.RequestURL(): "+req.getRequestURL());
-		LOGGER.info("req.getServletContext().getContextPath(): "+req.getServletContext().getContextPath());
-		LOGGER.info("req.getMethod(): "+req.getMethod());		
-		LOGGER.info("req.getServletPath(): "+req.getServletPath());
+		logger.info("---------------");
+		logger.info("req.getRequestURI(): "+req.getRequestURI());
+		logger.info("req.getContextPath(): "+req.getContextPath());
+		logger.info("req.getPathInfo(): "+req.getPathInfo());
+		logger.info("req.RequestURL(): "+req.getRequestURL());
+		logger.info("req.getServletContext().getContextPath(): "+req.getServletContext().getContextPath());
+		logger.info("req.getMethod(): "+req.getMethod());		
+		logger.info("req.getServletPath(): "+req.getServletPath());
 		if ("/login".equals(req.getServletPath())) {
-			LOGGER.info("on login ..");
+			logger.info("on login ..");
 			chain.doFilter(request, response);
 			return;
 		}
 		if ("/".equals(req.getServletPath())) {
-			LOGGER.info("on / ..");
+			logger.info("on / ..");
 			chain.doFilter(request, response);
 			return;
 		}
 		
 		if (flowManager.isAuthenticated()) {
-			LOGGER.info("Authenticated ... ");
+			logger.info("Authenticated ... ");
 			chain.doFilter(request, response);
 		} else {
 			
-			LOGGER.info("not authenticated on "+req.getServletPath());
+			logger.info("not authenticated on "+req.getServletPath());
 			flowManager.saveContext(req);
 
 			req.getRequestDispatcher("/login").forward(request, response);
