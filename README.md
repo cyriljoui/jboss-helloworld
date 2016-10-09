@@ -31,7 +31,24 @@ Note the usage of
 	@SessionScoped
 ```
 
+* in _web.xml_
+```xml
+	<welcome-file-list>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
+```
+
 * in jsp pages
 ```html
+<<<<<<< HEAD
 	<c:forEach items="${basket.items}" var="entry">	
+=======
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<base href="${pageContext.request.contextPath}/" />
+	<base href="<c:url value="/"/>" />
+	<link rel="stylesheet" href="<c:url value="css/bootstrap.css" />" />
+	<c:if test="${not empty user}">
+	</c:if>
+	<c:url value="/secured/hello" />
+>>>>>>> jstl
 ```

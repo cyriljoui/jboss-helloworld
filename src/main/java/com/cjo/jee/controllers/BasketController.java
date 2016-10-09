@@ -1,6 +1,7 @@
 package com.cjo.jee.controllers;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -23,9 +24,9 @@ public class BasketController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		basket.addItem(request.getParameter("name"), request.getParameter("value"));
+		basket.addItem(UUID.randomUUID().toString(), request.getParameter("item"));
 		
-		request.getRequestDispatcher("/hello").forward(request, response);
+		request.getRequestDispatcher("/secured/hello").forward(request, response);
 	}
 
 }

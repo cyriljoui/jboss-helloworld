@@ -1,19 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<base href="${pageContext.request.contextPath}/" />
+<base href="<c:url value="/"/>" />
 <link rel="stylesheet" href="<c:url value="css/bootstrap.css" />" />
 <script src="js/jquery-3.1.1.js"></script>
 <script src="js/bootstrap.js"></script>
+<title>Insert title here</title>
 </head>
 <body>
-
 <c:if test="${not empty user}">
 	<ul class="nav nav-tabs">
 		<li role="presentataion"><a href="<c:url value="/"/>" >Home</a></li>
@@ -28,29 +25,12 @@
 </c:if>
 
 <div class="container">
-	<h2>Hello ${user}!</h2>
-	Use the following form to add your favorite items to your basket.
+	<h2>JSP Servlet with login feature</h2>
+	Here we integrate some CDI API features to our <a href="https://jstl.java.net/" target="_blank">jstl</a> application.
 	<br/>
-	<form method="post" action="baskets">
-		<div class="form-group">
-			<input type="text" name="item" placeholder="Item description" class="form-control" />
-		</form-group>
-		<input type="submit" value="Add Item" class="btn btn-default" />
-	</form>
-
-	<hr/>
-	<table class="table table-bordered">
-	<tr>
-		<th>description</th>
-		<th>reference</th>
-	</tr>
-	<c:forEach items="${basket.items}" var="entry">
-	<tr>
-		<td>${entry.value}</td>
-		<td>${entry.key}</td>
-	</tr>		
-	</c:forEach>
-	</table>
+	We also included some new jsp and <a href="https://jstl.java.net/" target="_blank">jstl</a> tags. Try to discover them!
+	<br/><br/>
+	Use the navigation bar above to connect to your home page, logout, to naviagte ...
 </div>
 
 </body>
