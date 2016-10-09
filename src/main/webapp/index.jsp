@@ -1,19 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<base href="${pageContext.request.contextPath}/" />
+<base href="<c:url value="/"/>" />
 <link rel="stylesheet" href="<c:url value="css/bootstrap.css" />" />
 <script src="js/jquery-3.1.1.js"></script>
 <script src="js/bootstrap.js"></script>
+<title>Insert title here</title>
 </head>
 <body>
-
 <c:if test="${not empty user}">
 	<ul class="nav nav-tabs">
 		<li role="presentataion"><a href="<c:url value="/"/>" >Home</a></li>
@@ -28,12 +25,11 @@
 </c:if>
 
 <div class="container">
-
-	<h2>Hello ${user}!</h2>
-	Congratulations! You succeeded deploying your Web application on wildfly!
-	<br/>
-	Navigate on the above home page to test login/logout features.
-
+	<h2>JSP Servlet with login feature</h2>
+	The application aims to highlight some of the <a href="https://jstl.java.net/" target="_blank">jstl</a> tags along with authentication feature and user management in session.
+	<br/><br/>
+	Use the navigation bar above to connect to your home page, logout, to naviagte ...
 </div>
+
 </body>
 </html>

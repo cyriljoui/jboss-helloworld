@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Servlet Filter implementation class AuthenticationFilter
  */
-@WebFilter("/*")
+@WebFilter("/secured/*")
 public class AuthenticationFilter implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
@@ -40,14 +40,18 @@ public class AuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
+		// static resources
+		if (req.getServletPath().startsWith("/js") || req.getServletPath().startsWith("/css")) {
+			chain.doFilter(request, response);
+			return;
+		}
 		LOGGER.info("---------------");
 		LOGGER.info("req.getRequestURI(): "+req.getRequestURI());
 		LOGGER.info("req.getContextPath(): "+req.getContextPath());
 		LOGGER.info("req.getPathInfo(): "+req.getPathInfo());
 		LOGGER.info("req.RequestURL(): "+req.getRequestURL());
 		LOGGER.info("req.getServletContext().getContextPath(): "+req.getServletContext().getContextPath());
-		LOGGER.info("req.getMethod(): "+req.getMethod());
-		
+		LOGGER.info("req.getMethod(): "+req.getMethod());		
 		LOGGER.info("req.getServletPath(): "+req.getServletPath());
 		if ("/login".equals(req.getServletPath())) {
 			LOGGER.info("on login ..");

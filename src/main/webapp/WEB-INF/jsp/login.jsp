@@ -7,20 +7,37 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<base href="<c:url value="/"/>" />
+<link rel="stylesheet" href="<c:url value="css/bootstrap.css" />" />
+<script src="js/jquery-3.1.1.js"></script>
+<script src="js/bootstrap.js"></script>
+
 </head>
 <body>
-
-	<h1>Please login</h1>
-	<form method="post" action="login">
-		Username: <input type="text" name="username" /> <br/>
-		Password: <input type="password" name="password" /> <br/>
-		
-		<input type="submit" value="login" />
+<div class="container">
+	<h3>Login</h3>
+	<form class="form-horizontal" method="post" action="<c:url value="/login" />">
+	<div class="form-group">
+		<label class="col-sm-2">Username</label>
+		<div class="col-sm-10"><input class="form-control" type="text" name="username" /></div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2">Password</label>
+		<div class="col-sm-10"><input class="form-control" type="password" name="password" /></div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<input class="btn btn-default" type="submit" value="login" />
+		</div>
+	</div>
 	</form>
 	<hr/>
+	<h3>Hints</h3>
+	<i>Use one of the followings accounts to login.</i>
 	<ol>
 		<li>username: john.doe, password: pwd</li>
 		<li>username: ?add you username?, password: pwd</li>
 	</ol>
+</div>
 </body>
 </html>
