@@ -2,30 +2,33 @@ package com.cjo.jee.controllers;
 
 import java.util.logging.Logger;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.security.sasl.AuthenticationException;
 
 import com.cjo.jee.backend.AuthenticationService;
 import com.cjo.jee.controllers.model.User;
 
-@ManagedBean
+@RequestScoped
+@Named
 public class Login {
 
+	@Inject
+	private Logger logger;
+	
 	@Inject
 	private AuthenticationService authService;
 	
 	@Inject
 	UserSessionManager sessionManager;
 
-	@ManagedProperty("#{user}")
-	private User user;
+	private User user = new User();
 	
 	public String authenticate() throws AuthenticationException {
 		authService.authentication(user.getUsername(), user.getPassword());
-		sessionManager.onLoginSuccess(user.getUsername());
-		Logger.getLogger(Login.class.getName()).info("User authenticated "+user.getUsername());
+		sessionManager.onLoginSuccess(user);
+		logger.info("User authenticated "+user.getUsername());
 		return "next";
 	}
 

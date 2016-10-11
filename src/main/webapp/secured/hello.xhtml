@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Login page</title>
+	<h:outputStylesheet library="css" name="bootstrap.css"  />
+</h:head>
+<h:body>
+
+<h:panelGroup rendered="#{not empty user}">
+<h:form>
+	<ul class="nav nav-tabs">
+		<li role="presentataion"><h:link value="Home" outcome="/index.xhtml" /></li>
+		<li role="presentataion"><h:link value="${user.username}" outcome="/secured/hello.xhtml" /></li>		
+		<li role="presentataion"><h:commandLink value="Logout" action="#{hello.logout()}" /></li>
+	</ul>
+</h:form>
+</h:panelGroup>
+<h:panelGroup rendered="#{empty user}">
+	<ul class="nav nav-tabs">
+		<li role="presentataion"><h:link value="Connect" outcome="/secured/hello.xhtml" /></li>
+	</ul>
+</h:panelGroup>
+
+<div class="container">
+	<h2>Hello #{user.username}!</h2>
+	Use the following form to add your favorite items to your basket.
+	<br/>
+	<i>example: Audi A3 TFSI black edition</i>
+	<br/>
+
+	<h:form>
+		<div class="form-group">
+			<h:inputText value="#{basket.value}" class="form-control" placeholder="Item description" />
+		</div>
+		<h:commandButton action="#{basket.addNewItem()}" value="Add Item" class="btn btn-default" />
+	</h:form>
+
+	<hr/>
+	<h:dataTable value="#{basket.items.entrySet().toArray()}" var="item" class="table table-bordered">
+    	<h:column>
+    		<f:facet name="header">description</f:facet>
+    		#{item.value}
+    	</h:column>
+    	<h:column>
+    		<f:facet name="header">reference</f:facet>
+    		#{item.key}
+    	</h:column>
+	</h:dataTable>
+	
+</div>
+
+</h:body>
+</html>

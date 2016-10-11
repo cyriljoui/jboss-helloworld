@@ -3,26 +3,39 @@
       xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 	<title>Login page</title>
+	<h:outputStylesheet library="css" name="bootstrap.css"  />	
 </h:head>
 <h:body>
 
-	<h1>Please login</h1>
-	<h:form>
-		<fieldset>
-			<legend>Username</legend>
-			<h:inputText value="#{user.username}" />
-			<br/>
-			<legend>Password</legend>
-			<h:inputSecret value="#{user.password}" />
-			<br/>
-			<h:commandButton value="Login" action="#{login.authenticate()}"/>
-		</fieldset>
+<div class="container">
+	<h3>Login</h3>
+	<h:form class="form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-2">Username</label>
+		<div class="col-sm-10">
+			<h:inputText class="form-control" value="#{login.user.username}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2">Password</label>
+		<div class="col-sm-10">
+			<h:inputSecret class="form-control" value="#{login.user.password}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<h:commandButton class="btn btn-default" value="Login" action="#{login.authenticate()}"/>
+		</div>
+	</div>
 	</h:form>
-	
 	<hr/>
-	<ul>
-		<li>login: john.doe, password: pwd</li>
-	</ul>
-
+	<h3>Hints</h3>
+	<i>Use one of the followings accounts to login.</i>
+	<ol>
+		<li>username: john.doe, password: pwd</li>
+		<li>username: ?add you username?, password: pwd</li>
+	</ol>
+</div>
+	
 </h:body>
 </html>

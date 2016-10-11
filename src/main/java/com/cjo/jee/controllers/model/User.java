@@ -1,18 +1,6 @@
 package com.cjo.jee.controllers.model;
 
-import java.io.Serializable;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-
-@ManagedBean
-@SessionScoped
-public class User implements Serializable {
-
-	/**
-	 * UID.
-	 */
-	private static final long serialVersionUID = -5120267922006686138L;
+public class User {
 
 	private String username;
 	

@@ -1,19 +1,19 @@
 package com.cjo.jee.controllers;
 
-import java.util.logging.Logger;
-
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-@ManagedBean
+@Named
+@RequestScoped
 public class Hello {
 	
 	@Inject
-	private Logout logout;
+	private UserSessionManager sessionManager;
 	
 	public String logout() {
-		Logger.getLogger(Hello.class.getName()).info("logout");
-		logout.logout();
-		return "logout";
-	}	
+		sessionManager.logout();
+		return "index";
+	}
+	
 }

@@ -19,10 +19,11 @@ import com.cjo.jee.controllers.UserSessionManager;
 /**
  * Servlet Filter implementation class AuthenticationFilter
  */
-@WebFilter("/*")
+@WebFilter("/faces/secured/*")
 public class AuthenticationFilter implements Filter {
 
-	private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
+	@Inject
+    private Logger logger;
 
 	@Inject
 	UserSessionManager flowManager;
@@ -40,31 +41,36 @@ public class AuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
-		LOGGER.info("---------------");
-		LOGGER.info("req.getRequestURI(): "+req.getRequestURI());
-		LOGGER.info("req.getContextPath(): "+req.getContextPath());
-		LOGGER.info("req.getPathInfo(): "+req.getPathInfo());
-		LOGGER.info("req.RequestURL(): "+req.getRequestURL());
-		LOGGER.info("req.getServletContext().getContextPath(): "+req.getServletContext().getContextPath());
-		LOGGER.info("req.getMethod(): "+req.getMethod());
-		LOGGER.info("req.getServletPath(): "+req.getServletPath());
 
-		if (req.getPathInfo().equals("/index.xhtml")) {
-			LOGGER.info("on /index.xhtml ...");
+		// static resources
+		if (req.getServletPath().startsWith("/js") || req.getServletPath().startsWith("/css")) {
 			chain.doFilter(request, response);
 			return;
 		}
-		if (req.getPathInfo().equals("/login.xhtml")) {
-			LOGGER.info("on /login.xhtml ...");
+		logger.info("---------------");
+		logger.info("req.getRequestURI(): "+req.getRequestURI());
+		logger.info("req.getContextPath(): "+req.getContextPath());
+		logger.info("req.getPathInfo(): "+req.getPathInfo());
+		logger.info("req.RequestURL(): "+req.getRequestURL());
+		logger.info("req.getServletContext().getContextPath(): "+req.getServletContext().getContextPath());
+		logger.info("req.getMethod(): "+req.getMethod());		
+		logger.info("req.getServletPath(): "+req.getServletPath());
+		if ("/login".equals(req.getServletPath())) {
+			logger.info("on login ..");
+			chain.doFilter(request, response);
+			return;
+		}
+		if ("/".equals(req.getServletPath())) {
+			logger.info("on / ..");
 			chain.doFilter(request, response);
 			return;
 		}
 		if (flowManager.isAuthenticated()) {
-			LOGGER.info("Authenticated ... ");
+			logger.info("Authenticated ... ");
 			chain.doFilter(request, response);
 		} else {
-
-			LOGGER.info("not authenticated on "+req.getRequestURI());
+			
+			logger.info("not authenticated on "+req.getRequestURI());
 			((HttpServletResponse)response).sendRedirect(req.getServletContext().getContextPath()+"/faces/login.xhtml");
 		}
 	}
