@@ -14,5 +14,8 @@ public class HelloCDIMain {
 
         HelloService helloService = container.instance().select(HelloService.class).get();
         System.out.println(helloService.callHello());
+
+        ProductService productService = container.instance().select(ProductService.class).get();
+        productService.createProduct("1");
     }
 }
