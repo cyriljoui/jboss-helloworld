@@ -1,27 +1,22 @@
 package com.cjo.jee.backend;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.security.sasl.AuthenticationException;
+
+import com.cjo.jee.backend.dao.UserDAO;
+import com.cjo.jee.backend.data.User;
 
 @ApplicationScoped
 public class AuthenticationService {
 
-	public static Map<String, String> users;
-	
-	static {
-		users = new HashMap<>();
-		users.put("john.doe", "pwd");
-	}
+	@EJB
+	private UserDAO userDao;
 	
 	public String authentication(String username, String password) throws AuthenticationException {
-		if (! users.containsKey(username)) {
-			throw new AuthenticationException("invalid username "+username);
-		}
-		if (! users.get(username).equals(password)) {
-			throw new AuthenticationException("invalid password");
+		User user = userDao.findByUsernameAndPassword(username, password);
+		if (user == null) {
+			throw new AuthenticationException("invalid credentials for "+username);
 		}
 		return username;
 	}

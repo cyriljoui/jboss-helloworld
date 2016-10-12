@@ -8,7 +8,7 @@ import javax.inject.Named;
 import javax.security.sasl.AuthenticationException;
 
 import com.cjo.jee.backend.AuthenticationService;
-import com.cjo.jee.controllers.model.User;
+import com.cjo.jee.backend.data.User;
 
 @RequestScoped
 @Named

@@ -10,7 +10,7 @@ import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
-import com.cjo.jee.controllers.model.User;
+import com.cjo.jee.backend.data.User;
 
 @SessionScoped
 public class UserSessionManager implements Serializable {
