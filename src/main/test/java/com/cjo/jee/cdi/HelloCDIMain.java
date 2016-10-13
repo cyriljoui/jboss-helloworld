@@ -1,5 +1,6 @@
 package com.cjo.jee.cdi;
 
+import com.cjo.jee.cdi.ioc.Bean1;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
@@ -17,5 +18,8 @@ public class HelloCDIMain {
 
         ProductService productService = container.instance().select(ProductService.class).get();
         productService.createProduct("1");
+
+        Bean1 bean1 = container.instance().select(Bean1.class).get();
+
     }
 }

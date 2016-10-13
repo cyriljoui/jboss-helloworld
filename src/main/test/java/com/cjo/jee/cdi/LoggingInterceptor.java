@@ -10,10 +10,14 @@ import javax.interceptor.InvocationContext;
 public class LoggingInterceptor {
 
     @AroundConstruct
-    private void init(InvocationContext ic) throws Exception {
+    private void init(InvocationContext ic) {
         System.out.println("Entering constructor");
         try {
-            ic.proceed();
+            try {
+                ic.proceed();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } finally {
             System.out.println("Exiting constructor");
         }
