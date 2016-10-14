@@ -19,4 +19,5 @@ public class CatalogRestService {
         return Arrays.asList("Item1", "Item2", "Item3");
     }
 
+
 }

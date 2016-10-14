@@ -17,6 +17,7 @@ public class RestApplicationConfig extends Application {
     public RestApplicationConfig() {
         HashSet<Class<?>> c = new HashSet<>();
         c.add(CatalogRestService.class);
+        c.add(ValidationRestService.class);
         classes = Collections.unmodifiableSet(c);
     }
 
