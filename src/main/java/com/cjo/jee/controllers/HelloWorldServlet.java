@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/hello")
+@WebServlet("/secured-hello")
 public class HelloWorldServlet extends HttpServlet {
 
 	/**
@@ -19,6 +19,14 @@ public class HelloWorldServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("user", "John Doe");
+
+		request.getParameter("login");
+
 		request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp").forward(request, response);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
 	}
 }
