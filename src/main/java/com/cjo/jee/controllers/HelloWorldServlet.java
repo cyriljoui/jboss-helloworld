@@ -1,7 +1,10 @@
 package com.cjo.jee.controllers;
 
+import com.cjo.jee.controllers.model.AuthenticatedUserSession;
+
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,11 +19,12 @@ public class HelloWorldServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 2563570703208835685L;
 
+	@Inject
+	private AuthenticatedUserSession userSession;
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("user", "John Doe");
-
-		request.getParameter("login");
+		request.setAttribute("user", userSession.getUsername());
 
 		request.getRequestDispatcher("/WEB-INF/jsp/hello.jsp").forward(request, response);
 	}

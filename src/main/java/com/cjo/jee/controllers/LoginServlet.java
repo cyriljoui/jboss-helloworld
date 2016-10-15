@@ -1,5 +1,11 @@
 package com.cjo.jee.controllers;
 
+import com.cjo.jee.controllers.model.AuthenticatedUserSession;
+import com.cjo.jee.entity.User;
+import com.cjo.jee.service.AuthenticationException;
+import com.cjo.jee.service.IAuthenticationService;
+
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +19,12 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
+    @Inject
+    private IAuthenticationService authenticationService;
+
+    @Inject
+    private AuthenticatedUserSession userSession;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(req, resp);
@@ -24,10 +36,12 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         // Credentials OK?
-        if ("cjoui".equals(username) && "pass".equals(password)) {
-            req.getSession().setAttribute("loggedUsername", username);
+        try {
+            User authenticatedUser = authenticationService.authenticate(username, password);
+            userSession.setAuthenticated(true);
+            userSession.setUsername(username);
             req.getRequestDispatcher("/secured-hello").forward(req, resp);
-        } else {
+        } catch (AuthenticationException e) {
             req.setAttribute("error", "Login / password error");
             doGet(req, resp);
         }

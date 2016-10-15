@@ -1,5 +1,8 @@
 package com.cjo.jee.controllers;
 
+import com.cjo.jee.controllers.model.AuthenticatedUserSession;
+
+import javax.inject.Inject;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +13,10 @@ import java.io.IOException;
  */
 @WebFilter("/secured-hello")
 public class AuthenticationFilter implements Filter {
+
+    @Inject
+    private AuthenticatedUserSession userSession;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -21,8 +28,7 @@ public class AuthenticationFilter implements Filter {
         System.out.println(">> auth filter ");
 
         // Check user connected ?
-        String loggedUsername = (String) httpServletRequest.getSession().getAttribute("loggedUsername");
-        if (loggedUsername == null) {
+        if (!userSession.isAuthenticated()) {
             // not logged => error go to login
             request.getRequestDispatcher("/login").forward(request, response);
             return;
