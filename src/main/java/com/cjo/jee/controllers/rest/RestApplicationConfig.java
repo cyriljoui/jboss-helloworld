@@ -17,6 +17,9 @@ public class RestApplicationConfig extends Application {
     public RestApplicationConfig() {
         HashSet<Class<?>> c = new HashSet<>();
         c.add(ItemRestService.class);
+        c.add(NotFoundExceptionHandler.class);
+
+        c.add(ProductRestService.class);
         classes = Collections.unmodifiableSet(c);
     }
 

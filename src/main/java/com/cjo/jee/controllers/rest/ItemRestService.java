@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by popom on 15/10/2016.
@@ -37,7 +38,6 @@ public class ItemRestService {
     @Path("/{id}")
     public ItemDto getItem(@PathParam("id") String id) {
         Optional<ItemDto> first = items.stream().filter(itemDto -> itemDto.getId().equals(id)).findFirst();
-
 
         return first.get();
     }
