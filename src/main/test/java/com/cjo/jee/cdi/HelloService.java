@@ -1,5 +1,8 @@
 package com.cjo.jee.cdi;
 
+import com.cjo.jee.cdi.transaction.TransactionInterceptor;
+import com.cjo.jee.cdi.transaction.Transactional;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -32,8 +35,14 @@ public class HelloService {
         System.out.println("Pre destroy ... " + this);
     }
 
+//    @Interceptors({TransactionInterceptor.class})
+    @Transactional
     public String callHello() {
         return "Hello world CDI,simpleServiceNamed=" + simpleServiceNamed + ", simpleServiceTwo=" + simpleServiceTwo;
     }
 
+    @Transactional
+    public String callHelloTrow() throws Exception {
+        throw new Exception("Error thrown");
+    }
 }

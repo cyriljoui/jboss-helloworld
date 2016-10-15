@@ -14,7 +14,17 @@ public class HelloCDIMain {
         WeldContainer container = weld.initialize();
 
         HelloService helloService = container.instance().select(HelloService.class).get();
+        System.out.println(">>  Before calling hello");
         System.out.println(helloService.callHello());
+        System.out.println("<< After calling hello");
+
+
+        System.out.println(">>  Before calling hello2");
+        try {
+            System.out.println(helloService.callHelloTrow());
+        } catch (Exception e) {
+        }
+        System.out.println("<< After calling hello2");
 
         ProductService productService = container.instance().select(ProductService.class).get();
         productService.createProduct("1");
