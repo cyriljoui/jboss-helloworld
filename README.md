@@ -1,85 +1,61 @@
 # JEE Tutorial on Wildfly
 
-## JSF web application
-In this step, we are going to the same application using JSF technology highlighting the following features :
-- authentication
-- user _basket_ using JSF scopes (Session Scope)
-- _faces-config.xml_ to manage flow navigation between pages 
+## Wildfly administration
+In this step, we are going to configure wildfly in domain mode :
 
-## Checkout application step
-* run the following command to setup application step
-```sh
-	git checkout -f jsf
-```
-* deploy the application using
-```sh
-	mvn wildfly:deploy
-```
-All JSF pages (through JSF Servlet, see web.xml) are mapped on _/faces/*_ route.
-* on your favorite browser, display [http://localhost:8080/jboss-helloworld/](http://localhost:8080/jboss-helloworld/)
+### Domain Master configuration
 
-You will prompt to enter a login/password to access the _hello_ page.
+1. execute `add-user.sh(.bat)` to add a new user (say "slave") that will connect to dmain master from domain slave (choose 'Management User' and answer yes to 'Is this new user going to be used for one AS process ... ?')
 
-### excercise
-* Add a _remove item_ feature on the _/hello_ page
-* Add a new view (.xhtml) page with a navigation rule on the _faces-config.xml_
-
-## Notes
-Note the usage of
-
-* Java / JSF & CDI
-```java
-	@Named
-	@ManagedBean		=> prefer usage of CDI @Named
-	@ManagedProperty	=> prefer usage of CDI @Inject, @PostContruct
-	@javax.faces.bean.SessionScoped	=> prefer useage of CDI scopes
-	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-```
-
-* _faces-config.xml_ (navigation rules)
+_save the output displayed by the server
 ```xml
-	<navigation-rule>
-		<from-view-id>/login.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>next</from-outcome>
-			<to-view-id>/secured/hello.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<from-view-id>/secured/hello.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{hello.logout()}</from-action>
-			<to-view-id>/index.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	
+	<secret value="cx2hdmU=" />
 ```
+as it is needed to configure slave connection to master_.
 
-* in _web.xml_
+### Domain Slave configuration
+ 
+1. Set the name of the host to 'slave' (each slave in the domain must have a different name)
 ```xml
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>/faces/*</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+	<host xmlns="..." name="slave">
+		...
+	</host>
+```
+2. Add a new _security realm_
+```xml
+	<security-realm name="SlaveRealm">
+		<server-identities>
+			<secret value="report here add-user secret output" />
+		</server-identities>
+	</security-realm>
+```
+3. find and replace `domain-controller` xml tag `<local />` config with the following
+```xml
+	<domain-controller>
+		<remote host="master IP address" port="9999" username="user added above" security-realm="SlaveRealm" />
+	</domain-controller>
 ```
 
-* in xhtml pages
-```html
-	<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-            
-    <h:form />
-    <h:commandButton />
-    <h:inputText /> & <h:inputSecret /> 
-    <h:outputText />
-    <h:link />
+### Starting all together
+
+1. Start the domain master using the following command:
+```sh
+bin/domain.sh -b 0.0.0.0 -bmanagement <master IP address>
 ```
-and explore xhtml pages.
+2. Start the domain slave using the following command:
+```sh
+bin/domain.sh
+```
+On launch, you should observe on both servers (master and slave) that connection has been established (slave joined master).
+
+## Testing the domain mode
+
+1. Launch the JBoss command line interface using the following command
+```sh
+bin/jboss-cli.sh --connect --controller=<master IP address>:9999 
+```
+2. Try deploy an application through the _jboss-cli_ and observers what happens on both servers.
+ 
+
+
+
