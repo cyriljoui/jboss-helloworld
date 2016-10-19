@@ -54,7 +54,7 @@ On launch, you should observe on both servers (master and slave) that connection
 ```sh
 bin/jboss-cli.sh --connect --controller=<master IP address>:9999 
 ```
-2. Try deploy an application through the _jboss-cli_ and observers what happens on both servers.
+2. Try deploy an application through the _jboss-cli_ and observe what happens on both servers.
  
 
 
