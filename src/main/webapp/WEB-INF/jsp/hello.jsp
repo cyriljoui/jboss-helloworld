@@ -14,14 +14,14 @@
 </head>
 <body>
 
-<c:if test="${not empty user}">
+<c:if test="${not empty pageContext.request.getUserPrincipal()}">
 	<ul class="nav nav-tabs">
 		<li role="presentataion"><a href="<c:url value="/"/>" >Home</a></li>
-		<li role="presentataion"><a href="<c:url value="/secured/hello"/>" >${user}</a></li>
+		<li role="presentataion"><a href="<c:url value="/secured/hello"/>" >${pageContext.request.getUserPrincipal().getName()}</a></li>
 		<li role="presentation"><a href="<c:url value="/logout"/>">Logout</a></li>
 	</ul>
 </c:if>
-<c:if test="${empty user}">
+<c:if test="${empty pageContext.request.getUserPrincipal()}">
 	<ul class="nav nav-tabs">
 		<li role="presentation"><a href="<c:url value="/secured/hello" />">Connect</a></li>
 	</ul>
@@ -29,7 +29,7 @@
 
 <div class="container">
 
-	<h2>Hello ${user}!</h2>
+	<h2>Hello ${pageContext.request.getUserPrincipal().getName()}!</h2>
 	Congratulations! You succeeded deploying your Web application on wildfly!
 	<br/>
 	Navigate on the above home page to test login/logout features.

@@ -31,6 +31,11 @@
 		</div>
 	</div>
 	</form>
+
+<c:if test="${not empty error}">
+	<div class="alert alert-error">${error}</div>
+</c:if>
+
 	<hr/>
 	<h3>Hints</h3>
 	<i>Use one of the followings accounts to login.</i>

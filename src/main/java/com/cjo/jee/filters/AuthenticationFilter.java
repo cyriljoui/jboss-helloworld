@@ -1,8 +1,10 @@
 package com.cjo.jee.filters;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -11,21 +13,28 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * Servlet Filter implementation class AuthenticationFilter
  */
-@WebFilter("/secured/*")
+@WebFilter("/*")
 public class AuthenticationFilter implements Filter {
 
-    private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
+
+	@Inject
+	private Connected connected;
+
+	@Inject
+	private ConnectionFlow flow;
 
 	/**
-     * Default constructor. 
-     */
-    public AuthenticationFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	 * Default constructor. 
+	 */
+	public AuthenticationFilter() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Filter#destroy()
@@ -53,32 +62,45 @@ public class AuthenticationFilter implements Filter {
 		LOGGER.info("req.getServletContext().getContextPath(): "+req.getServletContext().getContextPath());
 		LOGGER.info("req.getMethod(): "+req.getMethod());		
 		LOGGER.info("req.getServletPath(): "+req.getServletPath());
+
+		if ("/logout".equals(req.getServletPath())) {
+			LOGGER.info("on logout ..");
+			chain.doFilter(req, response);
+			return;
+		}
+		
+		// pass the request along the filter chain
+		if (connected.isConnected()) {
+			req = new HttpServletRequestWrapper(req) {
+				@Override
+				public Principal getUserPrincipal() {
+					return connected.getPrincipal();
+				}
+			};
+		}
+
 		if ("/login".equals(req.getServletPath())) {
 			LOGGER.info("on login ..");
-			chain.doFilter(request, response);
+			chain.doFilter(req, response);
 			return;
 		}
-		if ("/".equals(req.getServletPath())) {
-			LOGGER.info("on / ..");
-			chain.doFilter(request, response);
+		if (!req.getServletPath().startsWith("/secured/")) {
+			LOGGER.info("not secured ...");
+			chain.doFilter(req, response);
 			return;
 		}
-		
-		if (req.getSession().getAttribute("user") == null) {
-			
+
+		if (! connected.isConnected()) {
+
 			LOGGER.info("not authenticated on "+req.getServletPath());
-			
-			req.getSession().setAttribute("X-SAVED-REQUEST-PATH", req.getRequestURI());
-			req.getSession().setAttribute("X-SAVED-REQUEST-METHOD", req.getMethod());
-			
-			req.getRequestDispatcher("/login").forward(request, response);
-			
+			flow.top();
+			req.getRequestDispatcher("/login").forward(req, response);
+
 		} else {
-			LOGGER.info("Authenticated ... ");
-			// pass the request along the filter chain
-			chain.doFilter(request, response);
+			LOGGER.info("Authenticated ..., user principal="+connected.getPrincipal());
+			chain.doFilter(req, response);
 		}
-		
+
 	}
 
 	/**
