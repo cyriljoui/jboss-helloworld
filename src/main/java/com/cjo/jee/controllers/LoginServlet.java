@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.logging.Logger;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.naming.AuthenticationException;
 import javax.servlet.ServletException;
@@ -33,11 +34,15 @@ public class LoginServlet extends HttpServlet {
 	@Inject
 	private ConnectionFlow connectionFlow;
 	
+	@Inject
+	private Event<HttpServletRequest> event;
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LOGGER.info("GET on /login");
+		event.fire(request);
 		if (connected.isConnected()) {
 			request.getRequestDispatcher("/").forward(request, response);
 		} else {

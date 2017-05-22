@@ -10,7 +10,7 @@ import javax.naming.AuthenticationException;
 public class AuthenticationService {
 
 	@Inject
-	@Database
+//	@Database
 	private IRepository repository;
 	
 	public String authenticate(String login, String pwd) throws AuthenticationException {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.logging.Logger;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -21,7 +22,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 @WebFilter("/*")
 public class AuthenticationFilter implements Filter {
 
-	private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
+	@Inject
+	private Logger LOGGER;
 
 	@Inject
 	private Connected connected;
@@ -29,6 +31,12 @@ public class AuthenticationFilter implements Filter {
 	@Inject
 	private ConnectionFlow flow;
 
+	@Inject @com.cjo.jee.services.Error
+	private Event<LogEvent> errorEvent;
+
+	@Inject
+	private Event<LogEvent> event;
+	
 	/**
 	 * Default constructor. 
 	 */
@@ -54,14 +62,8 @@ public class AuthenticationFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
-		LOGGER.info("---------------");
-		LOGGER.info("req.getRequestURI(): "+req.getRequestURI());
-		LOGGER.info("req.getContextPath(): "+req.getContextPath());
-		LOGGER.info("req.getPathInfo(): "+req.getPathInfo());
-		LOGGER.info("req.RequestURL(): "+req.getRequestURL());
-		LOGGER.info("req.getServletContext().getContextPath(): "+req.getServletContext().getContextPath());
-		LOGGER.info("req.getMethod(): "+req.getMethod());		
-		LOGGER.info("req.getServletPath(): "+req.getServletPath());
+		
+		event.fire(new LogEvent(req));
 
 		if ("/logout".equals(req.getServletPath())) {
 			LOGGER.info("on logout ..");
@@ -81,6 +83,7 @@ public class AuthenticationFilter implements Filter {
 
 		if ("/login".equals(req.getServletPath())) {
 			LOGGER.info("on login ..");
+			errorEvent.fire(new LogEvent(req));
 			chain.doFilter(req, response);
 			return;
 		}

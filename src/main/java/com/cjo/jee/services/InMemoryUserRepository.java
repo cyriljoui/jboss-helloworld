@@ -4,11 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 
-@ApplicationScoped
-@Default
 public class InMemoryUserRepository implements IRepository {
 
 	private Map<String, String> users;
@@ -20,6 +16,7 @@ public class InMemoryUserRepository implements IRepository {
 	
 	@PostConstruct
 	public void init() {
+		System.out.println(".................. init ");
 		users = new HashMap<>();
 		
 		users.put("john.doe", "pwd");
