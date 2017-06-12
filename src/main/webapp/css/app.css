@@ -1,0 +1,24 @@
+body {
+    padding: 5px;
+}
+
+form {
+    width: 50%;
+    margin: auto;
+}
+
+.author {
+    width: 25%;
+}
+
+.title {
+    width: 25%;
+}
+
+.isbn {
+    width: 25%;
+}
+
+.form-signin * {
+    margin-top: 10px;
+}

@@ -1,116 +1,48 @@
 package com.cjo.jee.filters;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.logging.Logger;
+import com.cjo.jee.services.AuthenticationService;
 
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
- * Servlet Filter implementation class AuthenticationFilter
+ * Created by michir on 12/06/2017.
  */
-@WebFilter("/*")
+@WebFilter("/api/books")
 public class AuthenticationFilter implements Filter {
 
-	@Inject
-	private Logger LOGGER;
+    @Inject
+    Logger log;
 
-	@Inject
-	private Connected connected;
+    @Inject
+    AuthenticationService authService;
 
-	@Inject
-	private ConnectionFlow flow;
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
 
-	@Inject @com.cjo.jee.services.Error
-	private Event<LogEvent> errorEvent;
+    }
 
-	@Inject
-	private Event<LogEvent> event;
-	
-	/**
-	 * Default constructor. 
-	 */
-	public AuthenticationFilter() {
-		// TODO Auto-generated constructor stub
-	}
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        String token = req.getHeader("Authorization");
+        log.info("token "+token);
+        if (!authService.validate(token.substring("Bearer".length(), token.length()).trim())) {
+            HttpServletResponse resp = (HttpServletResponse) response;
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        } else {
+            chain.doFilter(request, response);
+        }
+    }
 
-	/**
-	 * @see Filter#destroy()
-	 */
-	public void destroy() {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void destroy() {
 
-	/**
-	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-	 */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-		HttpServletRequest req = (HttpServletRequest) request;
-		// static resources
-		if (req.getServletPath().startsWith("/js") || req.getServletPath().startsWith("/css")) {
-			chain.doFilter(request, response);
-			return;
-		}
-		
-		event.fire(new LogEvent(req));
-
-		if ("/logout".equals(req.getServletPath())) {
-			LOGGER.info("on logout ..");
-			chain.doFilter(req, response);
-			return;
-		}
-		
-		// pass the request along the filter chain
-		if (connected.isConnected()) {
-			req = new HttpServletRequestWrapper(req) {
-				@Override
-				public Principal getUserPrincipal() {
-					return connected.getPrincipal();
-				}
-			};
-		}
-
-		if ("/login".equals(req.getServletPath())) {
-			LOGGER.info("on login ..");
-			errorEvent.fire(new LogEvent(req));
-			chain.doFilter(req, response);
-			return;
-		}
-		if (!req.getServletPath().startsWith("/secured/")) {
-			LOGGER.info("not secured ...");
-			chain.doFilter(req, response);
-			return;
-		}
-
-		if (! connected.isConnected()) {
-
-			LOGGER.info("not authenticated on "+req.getServletPath());
-			flow.top();
-			req.getRequestDispatcher("/login").forward(req, response);
-
-		} else {
-			LOGGER.info("Authenticated ..., user principal="+connected.getPrincipal());
-			chain.doFilter(req, response);
-		}
-
-	}
-
-	/**
-	 * @see Filter#init(FilterConfig)
-	 */
-	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
-	}
-
+    }
 }

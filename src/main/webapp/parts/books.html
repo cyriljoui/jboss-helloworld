@@ -1,0 +1,38 @@
+<table class="table table-striped table-hover table-bordered">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="b in books">
+
+            <td>{{$index}}</td>
+
+            <td ng-hide="b.edit" class="title">{{b.title}}</td>
+            <td ng-show="b.edit" class="title"><input type="text" value="{{b.title}}" ng-model="b.title" /></td>
+
+            <td ng-hide="b.edit" class="author">{{b.author}}</td>
+            <td ng-show="b.edit" class="author"><input type="text" value="{{b.author}}" ng-model="b.author" /></td>
+
+            <td class="isbn">{{b.isbn}}</td>
+
+            <td ng-show="b.edit">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="save(b);"></span>
+                <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="b.edit=false"></span>
+            </td>
+
+            <td ng-hide="b.edit">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true" ng-click="b.edit=true"></span>
+                <span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="delete(b, $index)"></span>
+            </td>
+
+        </tr>
+    </tbody>
+
+</table>

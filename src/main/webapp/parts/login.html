@@ -1,0 +1,12 @@
+<form class="form-signin">
+    <label for="inputEmail" class="">Login</label>
+    <input type="text" id="inputEmail" class="form-control" placeholder="login ..." required autofocus ng-model="username">
+    <label for="inputPassword" class="">Mot de passe</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="mot de passe ..." required ng-model="password">
+
+
+    <span class="pull-right buttons">
+    <button class="btn btn-default" type="reset">Réinitialiser</button>
+    <button class="btn btn-primary" type="submit" ng-click="login()">Valider</button>
+    </span>
+</form>
