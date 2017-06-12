@@ -1,4 +1,4 @@
-package com.cjo.jee.interceptors;
+package com.cjo.jee.services;
 
 import java.util.logging.Logger;
 

@@ -1,4 +1,4 @@
-package com.cjo.jee.endpoints;
+package com.cjo.jee.endpoints.api;
 
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;

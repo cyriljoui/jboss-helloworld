@@ -1,6 +1,8 @@
 package com.cjo.jee.endpoints;
 
-import java.net.URI;
+import com.cjo.jee.endpoints.api.Book;
+import com.cjo.jee.services.BooksService;
+
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
@@ -9,7 +11,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.Status;
 
 @Path("/books")
@@ -20,7 +21,7 @@ public class BooksResource {
 	private Logger logger;
 	
 	@Inject
-	BooksService service;
+    BooksService service;
 
 	@GET
 	public Collection<Book> books() {
