@@ -1,20 +1,30 @@
 package com.cjo.jee.endpoints.api;
 
-import javax.validation.constraints.NotNull;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="Books")
 public class Book {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="bk_id")
+	private Long id;
+
+	@Column(name="bk_name")
 	private String title;
-
-	private String author;
-
-	private String isbn = "ISBN "+ UUID.randomUUID().toString().substring(0, 10);
-
-	private String id = UUID.randomUUID().toString();
-
+	
+	@ManyToOne
+	@JoinColumn(name="auth_id")
+	private Author author;
+	
     public String getTitle() {
         return title;
     }
@@ -23,23 +33,25 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getId() {
+    public Long getId() {
         return id;
     }
+    
+    public void setId(Long id) {
+    	this.id = id;
+    }
+
+	/**
+	 * @return the author
+	 */
+	public Author getAuthor() {
+		return author;
+	}
+
+	/**
+	 * @param author the author to set
+	 */
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
 }

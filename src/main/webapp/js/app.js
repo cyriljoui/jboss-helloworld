@@ -10,6 +10,10 @@
                   templateUrl: 'parts/login.html',
                   controller: 'LoginController'
           })
+          .when('/authors', {
+        	  templateUrl: 'parts/authors.html',
+        	  controller: 'AuthorsController'
+          })
           .when('/', {
                 templateUrl: 'parts/home.html',
                 controller: 'HomeController',
@@ -34,9 +38,11 @@ app.config(['SessionService'], function($httpProvider, SessionService) {
 
 app.run(function($rootScope, $location) {
     $rootScope.logout = function() {
-        $rootScope.user = null;
+    	$rootScope.token = null;
         $location.path('/');
     };
+    
+    $rootScope.user = window.localStorage.getItem("token");
 });
 
             app.controller('HomeController', function() {});
@@ -93,7 +99,7 @@ app.run(function($rootScope, $location) {
                     });
                 };
 
-                $scope.delete = function(b, index) {
+                $scope.del = function(b, index) {
                     console.log("deleting "+index);
                     $http({
                         method: 'delete',
@@ -107,3 +113,17 @@ app.run(function($rootScope, $location) {
                     });
                 };
             });
+app.controller('AuthorsController', function($scope, $http) {
+	
+	$scope.search = function(author) {
+		$http({
+			method: 'GET',
+			url: 'api/authors/'+author+'/books'
+		}).then(function(response) {
+			$scope.books = response.data;
+		}, function(response) {
+			// FIXME manage error
+		})
+	}
+	
+});

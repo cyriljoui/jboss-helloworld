@@ -13,7 +13,7 @@ import javax.naming.AuthenticationException;
 public class AuthenticationService {
 
 	@Inject
-//	@Database
+	@Database
 	private IRepository repository;
 
     @Inject

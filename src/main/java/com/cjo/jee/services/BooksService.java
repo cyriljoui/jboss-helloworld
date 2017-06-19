@@ -1,65 +1,40 @@
 package com.cjo.jee.services;
 
-import com.cjo.jee.endpoints.api.Book;
-
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.NotFoundException;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+
+import com.cjo.jee.endpoints.api.Book;
+import com.cjo.jee.repositories.BookRepository;
 
 @ApplicationScoped
+@Transactional
 public class BooksService {
 
-	private Map<String, Book> fms;
-
-	@PostConstruct
-	public void init() {
-		this.fms = new HashMap<>();
-		{
-			Book e = new Book();
-			e.setTitle("Java JEE");
-			fms.put(e.getId(), e);
-		}
-		{
-			Book e = new Book();
-			e.setTitle("AWS en pratique");
-			fms.put(e.getId(), e);
-		}
-		{
-			Book e = new Book();
-			e.setTitle("Docker in Action");
-			fms.put(e.getId(), e);
-		}
-	}
+    @Inject
+    private BookRepository bookRepository;
 	
 	public Collection<Book> all() {
-		return fms.values();
+		return bookRepository.listBooks();
 	}
 
 	public Book forId(String id) {
-		return fms.get(id);
+	    return bookRepository.read(Long.valueOf(id));
 	}
-
-	public String add(Book book) {
-		fms.put(book.getId(), book);
-		return book.getId();
+	
+	public Long add(Book book) {
+	    return bookRepository.create(book).getId();
 	}
 
 	public Book save(Book book) {
-	    if (!fms.containsKey(book.getId())) {
-	        throw new NotFoundException();
-        }
-		fms.put(book.getId(), book);
+	    bookRepository.update(book);
 		return book;
 	}
 
     public void delete(String id) {
-	    if (!fms.containsKey(id)) {
-	        throw new NotFoundException();
-        }
-	    fms.remove(id);
+	    Book book = bookRepository.read(Long.valueOf(id));
+	    bookRepository.delete(book);
     }
 }

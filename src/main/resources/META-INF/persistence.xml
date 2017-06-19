@@ -3,24 +3,32 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 
-	<persistence-unit name="helloPU" transaction-type="JTA">
-		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+	<persistence-unit name="bookPu" transaction-type="JTA">
+		<jta-data-source>java:/BookDS</jta-data-source>
 		<properties>
-			<property name="javax.persistence.schema-generation.database.action" value="create" /> <!-- drop-and-create, drop, none -->
+			<property name="javax.persistence.schema-generation.database.action" value="none" /> <!-- create, drop-and-create, drop, none -->
 
-			<!--
+<!-- 
 			<property name="javax.persistence.sql-load-script-source" value="META-INF/sql/data.sql" />
-			-->
+ -->
+
 			<!-- other possible values: metadata, script, metadata-then-script, script-then-metadata 
 				<property name="javax.persistence.scahema-generation.create-source" value="metadata" 
 				/> -->
-			<!-- <property name="javax.persistence.schema-generation.create-script-source" 
-				value="META-INF/sql/create.sql" /> -->
+				<!-- 
+			<property name="javax.persistence.schema-generation.create-script-source" 
+				value="META-INF/sql/create.sql" />
+				 -->
+				
 			<!-- <property name="javax.persistence.schema-generation.drop-source" 
 				value="script" /> -->
-			<!-- <property name="javax.persistence.schema-generation.drop-script-source" 
-				value="META-INF/sql/drop.sql" /> -->
+			
+			<!-- 
+			<property name="javax.persistence.schema-generation.drop-script-source" 
+				value="META-INF/sql/drop.sql" />
+			 -->
+			
 			<!-- <property name = "hibernate.show_sql" value = "true" /> -->
 		</properties>
-	</persistence-unit>
+	</persistence-unit>	
 </persistence>
